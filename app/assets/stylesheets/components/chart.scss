@@ -1,0 +1,52 @@
+.chart-container {
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 2px #ccc;
+}
+
+.chart-header {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+
+  .ui-select-container {
+    margin-top: -7px;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.chart-body {
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart svg {
+  .y.axis .domain {
+    stroke: none !important;
+  }
+}
+
+.chart-loading {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background: rgba(255,255,255, 0.95);
+  color: #5F5E5E;
+  display: table;
+  width: 100%;
+
+  .chart-loading-inner {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  svg {
+    stroke: #5F5E5E;
+  }
+}

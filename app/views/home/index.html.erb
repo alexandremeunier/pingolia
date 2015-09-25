@@ -1,0 +1,6 @@
+<div ng-app="app">
+  <div ui-view></div>
+</div>
+<script type="text/javascript">
+  window.AVAILABLE_ORIGINS = ['<%= @origins.join('\', \'').html_safe %>'];
+</script>

@@ -1,0 +1,28 @@
+<br><br>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+      <div class="chart-container">
+        <div class="chart-header">
+          <ui-select ng-model="origin" class="origin-select" on-select="updateOrigin($item, $model)">
+            <ui-select-match placeholder="Select or search an origin in the list...">
+              {{$select.selected.name}}
+            </ui-select-match>
+            <ui-select-choices repeat="origin in availableOrigins | filter: $select.search">
+              <span ng-bind-html="origin.name | highlight: $select.search"></span>
+            </ui-select-choices>
+          </ui-select>
+          Total average transfer times per hour
+        </div>
+        <div class="chart-body">
+          <div class="chart-loading" ng-if="dataLoading" style="height: 300px;">
+            <div class="chart-loading-inner">
+              Loading
+              <div ng-include="'loading.html'"></div>
+            </div>
+          </div>
+          <linechart data="chartData" options="chartOptions" height="300"></linechart>
+        </div>
+    </div>
+  </div>
+</div>

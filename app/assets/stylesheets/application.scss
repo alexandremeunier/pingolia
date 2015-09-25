@@ -1,0 +1,10 @@
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+@import 'angular-ui-select/dist/select';
+
+@import 'variables';
+@import 'components/*';
+
+body {
+  background: #ddd;
+}

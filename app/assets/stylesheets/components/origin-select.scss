@@ -1,0 +1,26 @@
+.origin-select {
+  float: right;
+  width: 220px;
+  transition: width 0.1s ease-in-out;
+
+  .btn-default-focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &.open {
+    width: 400px;
+  }
+
+  .ui-select-toggle {
+    border: none;
+    box-shadow: none;
+    text-align: right;
+  }
+
+  .ui-select-match-text {
+    font-family: $font-monospace;
+    float: right !important;
+    margin-right: 15px;
+  }
+}

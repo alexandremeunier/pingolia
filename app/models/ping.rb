@@ -40,4 +40,8 @@ class Ping < ActiveRecord::Base
       .select('DATE_TRUNC(\'hour\', pings.ping_created_at) AS ping_hour_created_at')
       .group('ping_hour_created_at')
   end
+
+  def self.max_ping_created_at
+    self.reorder('pings.ping_created_at DESC').limit(1).pluck(:ping_created_at).first
+  end
 end

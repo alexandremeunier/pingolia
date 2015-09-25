@@ -7,9 +7,13 @@ module Api::V1
 
     def hours
       origin = params[:origin]
+      pings_for_origin = Ping.for_origin(origin)
+
+      after_date = params[:after_date] || pings_for_origin.max_ping_created_at + 1.second
+      before_date = params[:before_date] || after_date - 1.day
       
-      @averages = Ping
-        .for_origin(origin)
+      @averages = pings_for_origin
+        .between_dates(before_date, after_date)
         .select_average(:transfer_time_ms)
         .select_and_group_by_ping_hour_created_at
 
