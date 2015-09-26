@@ -20,3 +20,4 @@ config/database.yml
 pings.json
 doc/
 vendor/assets/bower_components/
+*.dump
