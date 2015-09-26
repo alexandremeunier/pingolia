@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150923102715) do
+ActiveRecord::Schema.define(version: 20150926150956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "metrics_hourly_average_transfer_times", force: :cascade do |t|
+    t.string   "origin",                   null: false
+    t.float    "average_transfer_time_ms", null: false
+    t.datetime "ping_created_at_hour",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "metrics_hourly_average_transfer_times", ["origin", "ping_created_at_hour"], name: "origin_created_at", unique: true, using: :btree
+  add_index "metrics_hourly_average_transfer_times", ["origin"], name: "index_metrics_hourly_average_transfer_times_on_origin", using: :btree
 
   create_table "pings", force: :cascade do |t|
     t.string   "origin",              null: false

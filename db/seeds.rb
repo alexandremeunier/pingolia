@@ -9,13 +9,22 @@ end
 file_content = File.read(file_path)
 pings = JSON.parse(file_content)
 
+# Disabling metrics preprocessing
+Ping.auto_recalculate_metrics = false
+
 # Processing the array in parallel processes = easy way to speed up the process
 Parallel.each(pings, progress: 'Seeding Pings') do |ping|
   ping['ping_created_at'] = ping.delete('created_at')
   Ping.create(ping)
 end
 
-# require 'factory_girl_rails'
-# Parallel.each(0..100_000, in_processes: 5, progress: 'Seeding') do |n|
-#   FactoryGirl.create_list(:ping, 10, origin: 'millionpointscity')
-# end
+# Parallel creates PG connection issues
+# https://github.com/grosser/parallel/issues/62
+begin
+  ActiveRecord::Base.connection.reconnect!
+rescue
+  ActiveRecord::Base.connection.reconnect!
+end
+
+# We recalculate preprocessed metrics for everything
+Ping.registered_metrics.each &:refresh_all

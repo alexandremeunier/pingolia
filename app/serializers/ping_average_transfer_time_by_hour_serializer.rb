@@ -1,4 +1,4 @@
 class PingAverageTransferTimeByHourSerializer < ApplicationSerializer
   attributes :average_transfer_time_ms
-  attributes :ping_hour_created_at
+  attributes :ping_created_at_hour
 end

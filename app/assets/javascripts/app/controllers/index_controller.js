@@ -27,7 +27,7 @@ app.controller('IndexController', [
     $scope.chartOptions = {
       axes: { 
         x: {
-          key: 'pingHourCreatedAt',
+          key: 'pingCreatedAtHour',
           // ticksFormatter: formatHour,
           type: 'date'
         },

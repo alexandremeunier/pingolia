@@ -7,16 +7,14 @@ module Api::V1
 
     def hours
       select_pings
-      @before_date, @after_date = date_params
       
-      @averages = @pings_for_origin
+      @before_date, @after_date = date_params
+    
+      @averages = Metrics::HourlyAverageTransferTime
+        .where(origin: @origin)
+        .between_dates(@before_date, @after_date)
         .page(params[:page])
-        .per(24) # Return up to 24 results
-        .select_average(:transfer_time_ms)
-        .select_and_group_by_ping_hour_created_at
-        .before_date(@before_date)
-
-      @averages = @averages.after_date(@after_date) unless @after_date.nil?
+        .per(24)
 
       render json: @averages, 
         serializer: PaginatedSerializer,

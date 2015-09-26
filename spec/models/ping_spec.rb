@@ -79,8 +79,8 @@ describe Ping do
     end
   end
 
-  describe '.select_and_group_by_ping_hour_created_at' do 
-    subject { Ping.select_and_group_by_ping_hour_created_at }
+  describe '.select_and_group_by_truncated_date' do 
+    subject { Ping.select_and_group_by_truncated_date(:hour) }
     before do
       pings_today_at_9am
       pings_yesterday_at_10am
@@ -92,7 +92,7 @@ describe Ping do
 
     it 'should have the correct ping_hour_created_at values' do 
       values = subject.map do |grouped_ping|
-        grouped_ping.ping_hour_created_at.change(min: 0)
+        grouped_ping.ping_created_at_hour.change(min: 0)
       end
 
       expect(values).to include today.change(hour: 9)
