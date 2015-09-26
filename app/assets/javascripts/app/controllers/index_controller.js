@@ -27,7 +27,7 @@ app.controller('IndexController', [
     $scope.chartOptions = {
       axes: { 
         x: {
-          key: 'pingCreatedAtHour',
+          key: 'averageDate',
           // ticksFormatter: formatHour,
           type: 'date'
         },
@@ -41,7 +41,7 @@ app.controller('IndexController', [
         }
       },
       series: [{
-        y: 'averageTransferTimeMs',
+        y: 'averageValue',
         dotSize: 4,
         thickness: '2px'   
       }],

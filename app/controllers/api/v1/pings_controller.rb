@@ -5,24 +5,41 @@ module Api::V1
       respond_with(@ping, location: root_url)
     end
 
-    def hours
+    def averages(interval, default_per)
       select_pings
       
-      @before_date, @after_date = date_params
+      @before_date, @after_date = date_params(interval)
+
+      interval_for_klass = interval == :day ? :dai : interval
+      metrics_klass = "Metrics::#{interval_for_klass.to_s.camelize}lyAverageTransferTime".constantize
     
-      @averages = Metrics::HourlyAverageTransferTime
+      @averages = metrics_klass
         .where(origin: @origin)
         .between_dates(@before_date, @after_date)
         .page(params[:page])
-        .per(24)
+        .per(params[:per] || default_per)
 
       render json: @averages, 
         serializer: PaginatedSerializer,
-        each_serializer: PingAverageTransferTimeByHourSerializer,
+        each_serializer: PingAverageSerializer,
+        average_interval: interval,
+        average_column_name: :transfer_time_ms,
         meta: {
           max_ping_created_at: @max_ping_created_at,
           min_ping_created_at: @min_ping_created_at
         }
+    end
+
+    def hours
+      averages(:hour, 24)
+    end
+
+    def days
+      averages(:day, 30)
+    end
+
+    def months
+      averages(:month, 12)
     end
 
     private
@@ -45,9 +62,8 @@ module Api::V1
         @min_ping_created_at = @pings_for_origin.min_ping_created_at
       end
 
-      def date_params
+      def date_params(interval)
         return nil, nil if @max_ping_created_at.nil? # If max is nil, there are no matching pings
-
 
         before_date = if params.include?(:before)
           DateTime.parse(params[:before]) rescue @max_ping_created_at + 1.second
@@ -55,10 +71,16 @@ module Api::V1
           @max_ping_created_at + 1.second
         end
 
+        after_date_interval = case interval
+        when :hour; :day
+        when :day; :month
+        when :month; :year;
+        end
+
         after_date = if params.include?(:after)
-          DateTime.parse(params[:after]) rescue before_date - 1.day
+          DateTime.parse(params[:after]) rescue before_date - 1.send(after_date_interval)
         else
-          before_date - 1.day
+          before_date - 1.send(after_date_interval)
         end
         
         return before_date, after_date

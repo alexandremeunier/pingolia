@@ -4,7 +4,7 @@ class Ping < ActiveRecord::Base
         :name_lookup_time_ms, :total_time_ms, :status
 
   include HasMetric
-  has_metric :hourly_average_transfer_time
+  has_metric :hourly_average_transfer_time, :monthly_average_transfer_time, :daily_average_transfer_time
 
   include DateUtils
   self.primary_date_attr = :ping_created_at
