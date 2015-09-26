@@ -46,22 +46,12 @@
           </div>
         </div>
         <div class="chart-body">
-          <div class="chart-loading" ng-if="dataLoading" style="height: 300px;">
-            <div class="chart-loading-inner">
-              Loading
-              <div ng-include="'loading.html'"></div>
-            </div>
-          </div>
+          <chart-loading-overlay ng-if="dataLoading" style="height: 300px;"></chart-loading-overlay>
           <linechart data="chartData" options="chartOptions" height="300"></linechart>
         </div>
         <div class="chart-footer">
           <div class="title">3 month overview</div>
-          <div class="chart-loading" ng-if="timelineDataLoading" style="height: 110px;">
-            <div class="chart-loading-inner">
-              Loading
-              <div ng-include="'loading.html'"></div>
-            </div>
-          </div>
+          <chart-loading-overlay ng-if="timelineDataLoading" style="height: 110px;"></div>
           <linechart data="timelineData" options="timelineOptions" height="110"></linechart>
         </div>
     </div>

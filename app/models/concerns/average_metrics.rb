@@ -17,6 +17,8 @@ module AverageMetrics
   end
 
   module ClassMethods
+    # Updates average metric for a given ping, i.e. updating or creating the
+    # correct value based on ping's origin and the ping's hour/day/month
     def refresh_from_ping(ping)
       date = case average_interval
       when :day
@@ -36,6 +38,7 @@ module AverageMetrics
       refresh_from_grouped_pings(grouped_pings, ping.origin)
     end
 
+    # Regenerate all average metrics for all Ping objects
     def refresh_all(ping_relation = Ping.all)
       grouped_pings = ping_relation
         .select_average(average_column_name)

@@ -14,6 +14,7 @@ app.config([
 app.controller('IndexController', [
   '$scope', 'fetchData', '$stateParams', '$state',
   function($scope, fetchData, $stateParams, $state) {
+    // Available origins list is extracted from window namespaced (inserted via rails view)
     $scope.availableOrigins = _.map(window.AVAILABLE_ORIGINS, function(origin) {
       return {
         name: origin
@@ -21,8 +22,12 @@ app.controller('IndexController', [
     });
     $scope.origin = _.findWhere($scope.availableOrigins, {name: $stateParams.origin}) ||
       $scope.availableOrigins[0];
-    $scope.chartData = [];
 
+    // Default values
+    $scope.chartData = [];
+    $scope.timelineData = [];
+
+    // Main chart options
     var tooltipDateFormatter = d3.time.format('%b %d %I%p');
     $scope.chartOptions = {
       axes: { 
@@ -61,6 +66,8 @@ app.controller('IndexController', [
       }
     };
 
+
+    // Timeline chart options
     $scope.timelineOptions = {
       axes: { 
         x: {
@@ -71,9 +78,7 @@ app.controller('IndexController', [
         },
         y: {
           min: 0,
-          ticksFormatter: function(y) {
-            return '';
-          },
+          ticksFormatter: function() { return ''; },
           ticks: 0
         }
       },
@@ -81,7 +86,7 @@ app.controller('IndexController', [
         y: 'averageValue',
         type: 'area',
         thickness: '0px',
-        drawDots: false,
+        drawDots: false
       }, {
         y: 'cursorValue',
         type: 'line',
@@ -101,12 +106,15 @@ app.controller('IndexController', [
       }
     };
 
+
+    // Handles displaying and updating the "cursor" in the timeline view (corresponding)
+    // to the currently selected date in main chart
+
     var previousCursorDate;
     var findCursorIndex = function(date) {
       return _.findIndex($scope.timelineData, function(datapoint) {
         var newDate = new Date(datapoint.averageDate);
         newDate.setHours(0, 0, 0, 0);
-        console.log('find', newDate, date)
         return +newDate === +date;
       });
     };
@@ -123,18 +131,17 @@ app.controller('IndexController', [
       var index = findCursorIndex(newCursorDate);
       if(index > -1) {
         $scope.timelineData[index].cursorValue = $scope.timelineData[index].averageValue;
-      } else {
-        console.log($scope.timelineData);
-      }
+      } 
       previousCursorDate = newCursorDate;
     };
 
+    // Fetches data and updates timeline chat
     $scope.timelineDataLoading = true;
     var updateTimeline = function() {
       $scope.timelineDataLoading = true;
       return fetchData('days', $scope.origin.name, {
         before: new Date(+$scope.datepicker.maxDate + 1000),
-        after: $scope.datepicker.maxDate - 3 * 30 * 24 * 3600 * 1000,
+        after: $scope.datepicker.maxDate - 3 * 30 * 24 * 3600 * 1000, // Fetches 3 months of data
         per: 100
       }).then(function(data) {
         $scope.timelineData = data;
@@ -144,6 +151,8 @@ app.controller('IndexController', [
     };
 
 
+    // Fetches data and updates main chart. Triggers cursor and timeline update
+    // as necessary. Also populates datepicker range. 
     var updateChart = function(doUpdateTimeline) {
       if(_.isUndefined(doUpdateTimeline)) doUpdateTimeline = false;
       $scope.dataLoading = true;
@@ -158,7 +167,7 @@ app.controller('IndexController', [
           new Date($scope.chartStartDate) : 
           new Date(data[data.length - 1].averageDate);
 
-        if(doUpdateTimeline || !$scope.timelineData) {
+        if(doUpdateTimeline || !$scope.timelineData.length) {
           updateTimeline().then(function() {
             updateCursor(newCursorDate);
           });
@@ -170,6 +179,7 @@ app.controller('IndexController', [
       });
     };
 
+    // Triggered when origin is changed via dropdown
     $scope.updateOrigin = function($item) {
       $scope.origin = {name: $item.name};
       $scope.chartStartDate = undefined;
@@ -177,6 +187,8 @@ app.controller('IndexController', [
       updateChart(true);
     };
 
+
+    // Datepicker configuration and behaviour
     if(!_.isUndefined($stateParams.date)) { 
       $scope.chartStartDate = new Date(Number($stateParams.date));
     }
@@ -196,8 +208,8 @@ app.controller('IndexController', [
       updateChart();
     });
 
+
+    // Bootstrap chart
     updateChart();
-
-
   }
 ]);

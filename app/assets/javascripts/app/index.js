@@ -3,6 +3,7 @@
 //= require_tree ./config
 //= require_tree ./templates
 //= require_tree ./services
+//= require_tree ./directives
 //= require_tree ./controllers
 
 angular.module('dependencies', [
