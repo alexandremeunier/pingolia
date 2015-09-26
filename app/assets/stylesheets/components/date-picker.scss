@@ -1,0 +1,38 @@
+ul[datepicker-popup-wrap] {
+  margin-top: 25px;
+  button {
+    border: none;
+  }
+}
+div[datepicker] {
+  padding: 5px 10px;
+
+  table:focus {
+    outline: none;
+  }
+
+  [disabled], [disabled] .text-muted {
+    color: #ddd;
+  }
+}
+
+.datepicker-toggle {
+  float: left;
+  border: none;
+  box-shadow: none;
+  text-align: right;
+  font-family: $font-monospace;
+  font-size: 12px;
+
+  margin-top: 6px;
+
+  @media(min-width: $screen-md-min) {
+    float: right;
+    margin-top: -3px;
+    margin-bottom: -7px;
+  }
+
+  i {
+    margin-left: 2px;
+  }
+}

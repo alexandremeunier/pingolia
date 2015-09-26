@@ -4,15 +4,44 @@
     <div class="col-sm-8 col-sm-offset-2">
       <div class="chart-container">
         <div class="chart-header">
-          <ui-select ng-model="origin" class="origin-select" on-select="updateOrigin($item, $model)">
-            <ui-select-match placeholder="Select or search an origin in the list...">
-              {{$select.selected.name}}
-            </ui-select-match>
-            <ui-select-choices repeat="origin in availableOrigins | filter: $select.search">
-              <span ng-bind-html="origin.name | highlight: $select.search"></span>
-            </ui-select-choices>
-          </ui-select>
-          Total average transfer times per hour
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-5">
+                <span class="title">
+                  Total average transfer times per hour
+                </span>
+              </div>
+              <div class="col-md-7">
+                <ui-select ng-model="origin" class="origin-select" on-select="updateOrigin($item, $model)">
+                  <ui-select-match placeholder="Select or search an origin in the list...">
+                    {{$select.selected.name}}
+                  </ui-select-match>
+                  <ui-select-choices repeat="origin in availableOrigins | filter: $select.search">
+                    <span ng-bind-html="origin.name | highlight: $select.search"></span>
+                  </ui-select-choices>
+                </ui-select>
+                <div  datepicker-popup="{{format}}" 
+                      ng-model="chartStartDate" 
+                      is-open="datepicker.opened" 
+                      min-date="datepicker.minDate"
+                      max-date="datepicker.maxDate" 
+                      datepicker-options="datepicker.ptions" 
+                      ng-required="true" 
+                      clear-text="Last 24 hours"
+                      show-weeks="false"
+                      init-date="datepicker.maxDate"
+                      starting-day="1"
+                      year-range="3"
+                      close-text="Close">
+                  <button type="button" class="btn btn-default datepicker-toggle" ng-click="openDatepicker($event)">
+                    <span ng-if="!chartStartDate">Last 24 hours</span>
+                    {{chartStartDate | date:'MMM dd, yyyy'}}
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="chart-body">
           <div class="chart-loading" ng-if="dataLoading" style="height: 300px;">

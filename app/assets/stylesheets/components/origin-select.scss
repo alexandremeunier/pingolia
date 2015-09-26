@@ -1,26 +1,35 @@
 .origin-select {
-  float: right;
-  width: 220px;
+  float: left;
   transition: width 0.1s ease-in-out;
+  margin-left: -20px;
+  margin-top: 6px;
+
+  @media(min-width: $screen-md-min) {
+    float: right;
+    margin-left: 0;
+    margin-top: 0;
+  }
 
   .btn-default-focus {
     outline: none;
     box-shadow: none;
   }
 
-  &.open {
-    width: 400px;
-  }
-
   .ui-select-toggle {
     border: none;
     box-shadow: none;
     text-align: right;
+    font-size: 12px;
+    height: auto;
   }
 
   .ui-select-match-text {
     font-family: $font-monospace;
-    float: right !important;
+    float: left !important;
     margin-right: 15px;
+
+    @media(min-width: $screen-md-min) {
+      float: right !important;
+    }
   }
 }

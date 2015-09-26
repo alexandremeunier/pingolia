@@ -8,11 +8,19 @@
   border-bottom: 1px solid #ccc;
   padding: 10px;
   position: relative;
+  
+  @media(min-width: $screen-md-min) {
+    .ui-select-container {
+      margin-top: -3px;
+      margin-bottom: -9px;
+    }
+  }
 
-  .ui-select-container {
-    position: absolute;
-    top: 3px;
-    right: 10px;
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: -10px;
   }
 }
 

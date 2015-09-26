@@ -12,7 +12,8 @@
       "restangular": "*",
       "angular-ui-router": "*",
       "angular-ui-select": "*",
-      "angular-sanitize": "~1.3"
+      "angular-sanitize": "~1.3",
+      "angular-bootstrap": "*"
     }
   }
 }

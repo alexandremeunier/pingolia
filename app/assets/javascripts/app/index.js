@@ -10,7 +10,8 @@ angular.module('dependencies', [
   'n3-line-chart',
   'ui.router',
   'ui.select',
-  'ngSanitize'
+  'ngSanitize',
+  'ui.bootstrap'
 ]);
 
 var app = angular.module('app', [

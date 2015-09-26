@@ -56,8 +56,10 @@ module Api::V1
           @max_ping_created_at + 1.second
         end
 
-        if params.include?(:after)
-          after_date = Time.at(params[:after].to_i) rescue nil
+        after_date = if params.include?(:after)
+          Time.at(params[:after].to_i) rescue nil
+        else
+          before_date - 1.day
         end
         
         return before_date, after_date
