@@ -7,12 +7,12 @@
 .chart-header {
   border-bottom: 1px solid #ccc;
   padding: 10px;
+  position: relative;
 
   .ui-select-container {
-    margin-top: -7px;
     position: absolute;
-    right: 0;
-    top: 0;
+    top: 3px;
+    right: 10px;
   }
 }
 

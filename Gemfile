@@ -27,6 +27,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 gem 'responders'
+gem 'active_model_serializers', '~> 0.8.0'
+gem 'kaminari'
 
 
 # Assets

@@ -6,15 +6,21 @@ angular.module('app').factory('fetchAverages', [
         params = {};
       }
 
+      console.log('lapin', params)
+
       var path = 'pings/' + origin + '/hours';
 
-      return Restangular.all(path, params).getList().then(function(data) {
-        return _.sortByOrder(data.map(function(dataPoint) {
+      return Restangular.all(path).getList(params).then(function(data) {
+        var output = _.sortByOrder(data.map(function(dataPoint) {
           return {
-            pingHourCreatedAt: new Date(dataPoint.ping_hour_created_at),
-            averageTransferTimeMs: dataPoint.average_transfer_time_ms
+            pingHourCreatedAt: new Date(dataPoint.pingHourCreatedAt),
+            averageTransferTimeMs: dataPoint.averageTransferTimeMs
           };
         }), 'pingHourCreatedAt');
+
+        output.meta = data.meta;
+
+        return output;
       });
     };
   }

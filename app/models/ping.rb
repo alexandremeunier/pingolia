@@ -20,13 +20,25 @@ class Ping < ActiveRecord::Base
     )
   end
 
+  # Shortcut scope to filter ping_created_at before a given date (excluded from selection)
+  # @param [DateTime] date _(excluded from results)_
+  scope :before_date, ->(date) do 
+    self.where('pings.ping_created_at < ?', date)
+  end
+
+  # Shortcut scope to filter ping_created_at after a given date (included in selection)
+  # @param [DateTime] date _(included in results)_
+  scope :after_date, ->(date) do 
+    self.where('pings.ping_created_at >= ?', date)
+  end
+
   # Adds a select clause to the current query, corresponding to the average value of 
   # a given column for that query
   # @param [Symbol,  String] column_name Name of column on which to compute the average
   # @return [ActiveRecord::Relation]  Updated query. Once query is executed, 
   #                                   the method +"average_#{column_name}"+ gives
   #                                   access to the value for each item in the relation
-  def self.select_average(column_name)
+  scope :select_average, ->(column_name) do 
     self.select("AVG(pings.#{column_name})::REAL AS average_#{column_name}")
   end
 
@@ -35,13 +47,18 @@ class Ping < ActiveRecord::Base
   # @return [ActiveRecord::Relation] Updated query. Once query is executed, 
   #                                  the method +"ping_hour_created_at"+ gives
   #                                  access to the value for each item in the relation
-  def self.select_and_group_by_ping_hour_created_at
+  scope :select_and_group_by_ping_hour_created_at, ->() do 
     self
       .select('DATE_TRUNC(\'hour\', pings.ping_created_at) AS ping_hour_created_at')
       .group('ping_hour_created_at')
+      .order('ping_hour_created_at DESC')
   end
 
   def self.max_ping_created_at
     self.reorder('pings.ping_created_at DESC').limit(1).pluck(:ping_created_at).first
+  end
+
+  def self.min_ping_created_at
+    self.reorder('pings.ping_created_at ASC').limit(1).pluck(:ping_created_at).first
   end
 end

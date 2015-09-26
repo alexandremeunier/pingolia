@@ -27,16 +27,35 @@ describe Ping do
     end
   end
 
-  describe '.between_dates' do 
+  describe 'date-related scopes' do
     let!(:ping0) { create(:ping, ping_created_at: today) }
     let!(:ping1) { create(:ping, ping_created_at: today - 1.second)}
     let!(:ping2) { create(:ping, ping_created_at: today - 2.seconds)}
     let!(:ping3) { create(:ping, ping_created_at: today - 3.seconds)}
-    it 'should select the correct values' do 
-      pings = Ping.between_dates(today - 1.second, today - 3.second)
-      expect(pings).to_not include ping1
-      expect(pings).to include ping2
-      expect(pings).to include ping3
+
+    describe '.between_dates' do 
+      it 'should select the correct values' do 
+        pings = Ping.between_dates(today - 1.second, today - 3.second)
+        expect(pings).to_not include ping1
+        expect(pings).to include ping2
+        expect(pings).to include ping3
+      end
+    end
+
+    describe '.before_date' do 
+      it 'should select the correct values' do 
+        pings = Ping.before_date(today)
+        expect(pings).to_not include ping0
+        expect(pings).to include(*[ping1, ping2, ping3])
+      end
+    end
+
+    describe '.after_date' do 
+      it 'should select the correct values' do 
+        pings = Ping.after_date(today - 1.second)
+        expect(pings).to_not include(*[ping2, ping3])
+        expect(pings).to include(*[ping0, ping1])
+      end
     end
   end
 
