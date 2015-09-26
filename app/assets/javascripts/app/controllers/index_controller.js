@@ -23,14 +23,7 @@ app.controller('IndexController', [
       $scope.availableOrigins[0];
     $scope.chartData = [];
 
-    var formatHour = function(hour) {
-      switch(hour) {
-        case 0: return '12am';
-        case 12: return '12pm';
-        default: return hour >= 12 ? ((hour + 12) % 12 + 'pm') : hour + 'am';
-      }
-    };
-
+    var tooltipDateFormatter = d3.time.format('%b %d %I%p');
     $scope.chartOptions = {
       axes: { 
         x: {
@@ -54,9 +47,9 @@ app.controller('IndexController', [
       }],
       tooltip: {
         mode: 'scrubber',
-        // formatter: function(x, y) {
-        //   return formatHour(x) + ': ' + y + 'ms';
-        // }
+        formatter: function(x, y) {
+          return tooltipDateFormatter(x) + ': ' + y + 'ms';
+        }
       },
       drawLegend: false,
       lineMode: 'monotone',
@@ -71,7 +64,7 @@ app.controller('IndexController', [
     var updateChart = function() {
       $scope.dataLoading = true;
       fetchHours($scope.origin.name, {
-        before: $scope.chartStartDate && new Date(+$scope.chartStartDate + 24 * 3601 * 1000)
+        before: $scope.chartStartDate && new Date(+$scope.chartStartDate + 24 * 3600 * 1000)
       }).then(function(data) {
         $scope.chartData = data;
         $scope.datepicker.minDate = new Date(data.meta.minPingCreatedAt);
@@ -95,13 +88,15 @@ app.controller('IndexController', [
       opened: false
     };
     $scope.openDatepicker = function($event) {
-      $event.preventDefault
+      $event.preventDefault();
       $scope.datepicker.opened = !$scope.datepicker.opened;
     }
     $scope.$watch('chartStartDate', function(newVal, oldVal) {
-      if(oldVal === newVal) return;
+      if(oldVal === newVal) {
+        return;
+      }
       var date = newVal && +newVal;
-      $state.go('.', {date: date}, {notify: false})
+      $state.go('.', {date: date}, {notify: false});
       updateChart();
     })
 
