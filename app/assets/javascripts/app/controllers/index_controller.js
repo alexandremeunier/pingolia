@@ -71,7 +71,7 @@ app.controller('IndexController', [
     var updateChart = function() {
       $scope.dataLoading = true;
       fetchHours($scope.origin.name, {
-        before: $scope.chartStartDate && Math.floor(+$scope.chartStartDate/1000)
+        before: $scope.chartStartDate && new Date(+$scope.chartStartDate + 24 * 3601 * 1000)
       }).then(function(data) {
         $scope.chartData = data;
         $scope.datepicker.minDate = new Date(data.meta.minPingCreatedAt);
@@ -81,7 +81,7 @@ app.controller('IndexController', [
       });
     };
 
-    $scope.updateOrigin = function($item, $model) {
+    $scope.updateOrigin = function($item) {
       $scope.origin = {name: $item.name};
       $scope.chartStartDate = undefined;
       $state.go('.', {origin: $item.name, date: undefined}, {notify: false});

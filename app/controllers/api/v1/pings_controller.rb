@@ -50,14 +50,15 @@ module Api::V1
       def date_params
         return nil, nil if @max_ping_created_at.nil? # If max is nil, there are no matching pings
 
-        before_date = if params.include?(:before) and /\A\d+\z/ === params[:before]
-          Time.at(params[:before].to_i) rescue @max_ping_created_at + 1.second
+
+        before_date = if params.include?(:before)
+          DateTime.parse(params[:before]) rescue @max_ping_created_at + 1.second
         else
           @max_ping_created_at + 1.second
         end
 
         after_date = if params.include?(:after)
-          Time.at(params[:after].to_i) rescue nil
+          DateTime.parse(params[:after]) rescue before_date - 1.day
         else
           before_date - 1.day
         end

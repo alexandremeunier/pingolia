@@ -100,7 +100,7 @@ describe Api::V1::PingsController do
 
       context 'when a valid before param is provided' do 
         it 'should assign the correct values' do 
-          get :hours, {origin: origin, before: today.to_i}
+          get :hours, {origin: origin, before: today.to_s}
           expect(assigns(:before_date)).to be == today
           expect(assigns(:after_date)).to be == today - 1.day
         end
@@ -116,7 +116,7 @@ describe Api::V1::PingsController do
 
       context 'when only an after param is provided' do 
         it 'should assign the correct values' do 
-          get :hours, {origin: origin, after: today.to_i}
+          get :hours, {origin: origin, after: today.to_s}
           expect(assigns(:before_date)).to be == assigns(:max_ping_created_at) + 1.second
           expect(assigns(:after_date)).to be == today
         end
@@ -124,7 +124,7 @@ describe Api::V1::PingsController do
 
       context 'when both before and after params are provided' do 
         it 'should assign the correct values' do 
-          get :hours, {origin: origin, after: (today - 1.day).to_i, before: today.to_i}
+          get :hours, {origin: origin, after: (today - 1.day).to_s, before: today.to_s}
           expect(assigns(:before_date)).to be == today
           expect(assigns(:after_date)).to be == today - 1.day
         end
