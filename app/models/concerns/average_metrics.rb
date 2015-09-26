@@ -19,12 +19,12 @@ module AverageMetrics
   module ClassMethods
     def refresh_from_ping(ping)
       date = case average_interval
+      when :day
+        ping.ping_created_at.change(hour: 0)
       when :hour
         ping.ping_created_at.change(min: 0)
       when :month
         ping.ping_created_at.change(day: 1)
-      when :week
-        ping.ping_created_at.monday
       end
 
       grouped_pings = Ping

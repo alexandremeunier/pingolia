@@ -21,3 +21,5 @@ pings.json
 doc/
 vendor/assets/bower_components/
 *.dump
+
+*.rdb

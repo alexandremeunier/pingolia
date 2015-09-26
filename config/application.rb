@@ -26,5 +26,7 @@ module Pingolia
 
     config.assets.precompile += %w( vendor.js app/index.js )
     config.angular_templates.ignore_prefix += %w( app/templates/ )
+
+    config.async_recalculate_metrics = ENV['ASYNC_RECALCULATE_METRICS'] == 'true'
   end
 end

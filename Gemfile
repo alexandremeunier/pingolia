@@ -4,33 +4,14 @@ ruby '2.2.3'
 
 # Stable rails
 gem 'rails', '4.2.4'
-# Use PostgreSQL 
 gem 'pg'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-# gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-# gem 'turbolinks'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
 
 gem 'responders'
 gem 'active_model_serializers', '~> 0.8.0'
 gem 'kaminari'
 gem 'unicorn'
+gem 'sidekiq'
 
 
 # Assets
@@ -62,6 +43,7 @@ group :development do
   gem 'ruby-progressbar', require: false
   gem 'parallel', require: false
   gem 'foreman'
+  gem 'sinatra', require: nil # For sidekiq monitoring
 end
 
 group :test do 

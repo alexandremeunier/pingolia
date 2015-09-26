@@ -17,9 +17,13 @@ module HasMetric
 
   # Refreshes metrics relating to current model instance
   def refresh_metrics
-    if self.auto_recalculate_metrics 
-      self.registered_metrics.each do |metric| 
-        metric.refresh_from_ping(self)
+    if self.auto_recalculate_metrics
+      if Rails.configuration.async_recalculate_metrics
+        MetricsWorker.perform_async(self.id)
+      else
+        self.registered_metrics.each do |metric| 
+          metric.refresh_from_ping(self)
+        end
       end
     end
   end
