@@ -23,7 +23,7 @@ While this is a worthwhile solution, the `Metrics` model allows us to decorrelat
 
 As an example, the demo application also calculates daily and monthly average `transfer_time_ms`. Daily values are used in the timeline beneath the main chart. Calculating those values in real time would greatly decrease the performance and UX of the charts.
 
-To remove the calculation load from the POST requests, metrics are preprocess in parallel in a sidekiq worker.
+To remove the calculation load from the POST requests, metrics are preprocessed in parallel in a sidekiq worker.
 
 
 
