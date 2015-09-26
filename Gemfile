@@ -29,6 +29,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'responders'
 gem 'active_model_serializers', '~> 0.8.0'
 gem 'kaminari'
+gem 'unicorn'
 
 
 # Assets
@@ -59,6 +60,7 @@ group :development do
   # For db:seed operation
   gem 'ruby-progressbar', require: false
   gem 'parallel', require: false
+  gem 'foreman'
 end
 
 group :test do 
