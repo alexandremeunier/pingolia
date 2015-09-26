@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :pings, only: :create do 
       get ':origin/hours', action: :hours, as: :hours, on: :collection
       get ':origin/months', action: :months, as: :months, on: :collection
-      get ':origin/years', action: :years, as: :years, on: :collection
+      get ':origin/days', action: :days, as: :days, on: :collection
     end
   end
 

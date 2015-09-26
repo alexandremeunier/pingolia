@@ -8,12 +8,13 @@
             <div class="row">
               <div class="col-md-5">
                 <span class="title">
-                  Total average transfer times per hour
+                  Hourly average transfer time
                 </span>
               </div>
               <div class="col-md-7">
                 <ui-select ng-model="origin" class="origin-select" on-select="updateOrigin($item, $model)">
                   <ui-select-match placeholder="Select or search an origin in the list...">
+                    <i class="glyphicon glyphicon-globe"></i>
                     {{$select.selected.name}}
                   </ui-select-match>
                   <ui-select-choices repeat="origin in availableOrigins | filter: $select.search">
@@ -34,9 +35,10 @@
                       year-range="3"
                       close-text="Close">
                   <button type="button" class="btn btn-default datepicker-toggle" ng-click="openDatepicker($event)">
+                    <i class="glyphicon glyphicon-calendar"></i>
                     <span ng-if="!chartStartDate">Last 24 hours</span>
                     {{chartStartDate | date:'MMM dd, yyyy'}}
-                    <i class="glyphicon glyphicon-calendar"></i>
+                    <i class="caret"></i>
                   </button>
                 </div>
               </div>
@@ -51,6 +53,16 @@
             </div>
           </div>
           <linechart data="chartData" options="chartOptions" height="300"></linechart>
+        </div>
+        <div class="chart-footer">
+          <div class="title">3 month overview</div>
+          <div class="chart-loading" ng-if="timelineDataLoading" style="height: 110px;">
+            <div class="chart-loading-inner">
+              Loading
+              <div ng-include="'loading.html'"></div>
+            </div>
+          </div>
+          <linechart data="timelineData" options="timelineOptions" height="110"></linechart>
         </div>
     </div>
   </div>

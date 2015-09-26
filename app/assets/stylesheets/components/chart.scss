@@ -30,6 +30,31 @@
   overflow: hidden;
 }
 
+.chart-footer {
+  position: relative;
+  border-top:  1px solid #ccc;
+
+  .chart svg {
+    .x.axis {
+      .domain {
+        stroke: rgb(188, 214, 233) !important;
+      }
+
+      .tick text {
+        fill: #aaa;
+      }
+    }
+  }
+
+  .title {
+    font-size: 12px;
+    position: absolute;
+    top: 60px;
+    left: 26px;
+    text-shadow: 1px 1px 0 white;
+  }
+}
+
 .chart svg {
   .y.axis .domain {
     stroke: none !important;

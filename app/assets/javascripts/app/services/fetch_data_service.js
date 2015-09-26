@@ -24,15 +24,26 @@ var buildMissingDatesInDay = function(arr) {
   }
 };
 
-angular.module('app').factory('fetchAverages', [
+var buildMissingDatesInMonths = function(arr) {
+  var date = arr[0].averageDate;
+
+  for(var i =  1; i < 90 - arr.length; i++) {
+    arr.unshift({
+      averageDate: new Date(+date - i * 24 * 3600 * 1000),
+      averageValue: 0
+    });
+  }
+};
+
+angular.module('app').factory('fetchData', [
   'Restangular', 
   function(Restangular) {
-    return function(origin, params) {
+    return function(interval, origin, params) {
       if(_.isUndefined(params)) {
         params = {};
       }
 
-      var path = 'pings/' + origin + '/hours';
+      var path = 'pings/' + origin + '/' + interval;
 
       return Restangular.all(path).getList(params).then(function(data) {
         var output = _.sortByOrder(data.map(function(dataPoint) {
@@ -44,9 +55,17 @@ angular.module('app').factory('fetchAverages', [
 
 
         // Adds missing hours if date was specified
-        if(output.length && output.length < 24) {
+        if(interval === 'hours' && output.length && output.length < 24) {
           if(params.before) {
             buildMissingDatesInDay(output);
+          }
+        }
+
+
+        // Add missing days if less than 3 months of data (timeline)
+        if(interval === 'days' && output.length && output.length < 90) {
+          if(params.before) {
+            buildMissingDatesInMonths(output);
           }
         }
 
