@@ -10,6 +10,7 @@ A live version of the app is available at https://pingolia-am.herokuapp.com/.
 1. Ensure you are running the correct version of ruby (`~2.2`) and have bundler installed (`gem install bundler`), postgres installed and running
 1. Install gem dependencies `bundle`
 1. Install bower dependencies `bundle exec rake bower:install`
+1. Create database configuration from `config/database.yml.example`
 1. Create the database and seed it `bundle exec rake db:create db:migrate db:seed`. _Note: `pings.json` must be copied to the repo root_
 1. Launch the development server `foreman start web`
 

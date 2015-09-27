@@ -1,0 +1,14 @@
+development: &default
+  host: localhost
+  adapter: postgresql
+  database: pingolia_dev
+  username: admin
+  password: 
+  min_messages: warning
+
+test:
+  <<: *default
+  database: pingolia_test
+
+production:
+  <<: *default
